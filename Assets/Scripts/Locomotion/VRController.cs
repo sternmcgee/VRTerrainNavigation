@@ -62,6 +62,10 @@ public class VRController : MonoBehaviour
 
     private void CalculateMovement()
     {
+        //return if move actions are null
+        if (movePress == null || moveValue == null)
+            return;
+
         // determine movement orientation
         Vector3 orientationEuler = new Vector3(0.0f, head.eulerAngles.y, 0.0f);
         Quaternion orientation = Quaternion.Euler(orientationEuler);
@@ -91,6 +95,10 @@ public class VRController : MonoBehaviour
 
     private void SnapRotation()
     {
+        //return if snap action is null
+        if (rotatePress == null)
+            return;
+
         float snapValue = 0.0f;
 
         // handle left hand
