@@ -14,7 +14,7 @@ namespace Valve.VR.InteractionSystem.Sample
 
         public Transform modelTrigger;
         public float triggerRot = 20;
-        
+
         public BuggyBuddy buggy;
 
         public Transform buttonBrake;
@@ -23,8 +23,6 @@ namespace Valve.VR.InteractionSystem.Sample
         //ui stuff
 
         public Canvas ui_Canvas;
-        public Canvas ui_ControlPanel;
-
         public Image ui_rpm;
         public Image ui_speed;
         public RectTransform ui_steer;
@@ -65,7 +63,6 @@ namespace Valve.VR.InteractionSystem.Sample
             StartCoroutine(DoBuzz());
             buggy.controllerReference = transform;
             initialScale = buggy.transform.localScale;
-
         }
 
         private void Update()
@@ -108,12 +105,6 @@ namespace Valve.VR.InteractionSystem.Sample
                 float speedLim = 40;
                 ui_speed.fillAmount = Mathf.Lerp(ui_fillAngles.x, ui_fillAngles.y, 1 - (Mathf.Exp(-buggy.speed / speedLim)));
 
-            }
-
-            if (ui_ControlPanel != null)
-            {
-                ui_ControlPanel.gameObject.SetActive(interactable.attachedToHand);
-                ui_ControlPanel.enabled = true;
             }
 
             modelJoystick.localRotation = joySRot;
@@ -160,7 +151,6 @@ namespace Valve.VR.InteractionSystem.Sample
             buggy.transform.localScale = initialScale;
 
             resettingRoutine = null;
-
         }
 
         private float buzztimer;
