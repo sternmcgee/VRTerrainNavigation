@@ -12,13 +12,14 @@ public class VRController : MonoBehaviour
 
     public SteamVR_Action_Boolean rotatePress = null;
     public SteamVR_Action_Boolean movePress = null;
-    public SteamVR_Action_Vector2 moveValue = null;
 
     [SerializeField] private float speed = 0.0f;
 
     private CharacterController characterController = null;
     private Transform cameraRig = null;
     private Transform head = null;
+    private Vector3 lastLHandPos;
+    private Vector3 lastRHandPos;
 
     private void Awake()
     {
@@ -63,10 +64,10 @@ public class VRController : MonoBehaviour
     private void CalculateMovement()
     {
         //return if move actions are null
-        if (movePress == null || moveValue == null)
+        if (movePress == null)
             return;
 
-        // determine movement orientation
+        // determine movement orientation with sum of controller forward vectors
         Vector3 orientationEuler = new Vector3(0.0f, head.eulerAngles.y, 0.0f);
         Quaternion orientation = Quaternion.Euler(orientationEuler);
         Vector3 movement = Vector3.zero;
@@ -78,8 +79,12 @@ public class VRController : MonoBehaviour
         // if button pressed
         if (movePress.GetState(SteamVR_Input_Sources.Any))
         {
+            //get initial distance between two controllers
+
+            //calculate move value based on difference of new and old distance 
+            float moveValue = 0.0f;
             // add and clamp
-            speed += moveValue.GetAxis(SteamVR_Input_Sources.Any).y * sensitivity;
+            speed += moveValue * sensitivity;
             speed = Mathf.Clamp(speed, -maxSpeed, maxSpeed);
 
             // orientation
