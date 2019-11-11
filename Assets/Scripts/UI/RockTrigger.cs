@@ -5,29 +5,39 @@ using UnityEngine.UI;
 
 public class RockTrigger : MonoBehaviour
 {
-    public static class RockTypes
-    {
-        public const string calcite = "Materials/Rock Data/Calcite_Rock_Mat";
-        public const string olivine = "Materials/Rock Data/Olivine_Rock_Mat";
-        //add more for more type options
-    }
-
-    public string rockType;
-    public Image rockDisplay;
+    //the type name of the rock (e.g. calcite)
+    [SerializeField]
+    private string rockType;
+    //the gameobject reference to the UI display object
+    [SerializeField]
+    private GameObject uiDisplay;
+    //reference to RockTypes script
+    [SerializeField]
+    private RockTypes rockTypes;
 
     // Start is called before the first frame update
     void Start()
     {
-        rockType = RockTypes.calcite;
         if (rockType == null)
             Debug.Log("Error: No rock type has been assigned to this object.");
-        if (rockDisplay == null)
+        if (uiDisplay == null)
             Debug.Log("Error: No rock display UI has been assigned to this object.");
+        if (rockTypes == null)
+            rockTypes = (RockTypes)GameObject.FindObjectOfType(typeof(RockTypes));
+        if (rockTypes == null)
+            Debug.Log("Error: No RockTypes script has been found in scene to reference.");
     }
 
     private void UpdateRockDisplay()
     {
-        rockDisplay.material = Resources.Load(rockType, typeof(Material)) as Material;
+        if (!rockTypes.IsRockType(rockType))
+        {
+            Debug.Log("Error: Name of rock type is not recognized as a stored rock type.");
+            return;
+        }
+
+        Image displayImage = uiDisplay.GetComponentInChildren<Image>();
+        displayImage.material = rockTypes.GetImage(rockType);
         Debug.Log("Rock material updated! used " + rockType);
     }
 
@@ -36,7 +46,6 @@ public class RockTrigger : MonoBehaviour
         if (other.tag == "Rover" || other.tag == "Player")
         {
             Debug.Log("Trigger collided!");
-
             UpdateRockDisplay();
         }
     }
