@@ -77,7 +77,7 @@ public class VRController : MonoBehaviour
             speed = 0;
                
         // if button pressed
-        if (movePress.GetState(SteamVR_Input_Sources.Any))
+        if (movePress.GetState(SteamVR_Input_Sources.LeftHand) && movePress.GetState(SteamVR_Input_Sources.RightHand))
         {
             //get initial distance between two controllers
 
