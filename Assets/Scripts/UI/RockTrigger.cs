@@ -41,12 +41,36 @@ public class RockTrigger : MonoBehaviour
         Debug.Log("Rock material updated! used " + rockType);
     }
 
+    // Function to Make the Rock Display Invisible
+    private void RemoveRockDisplay()
+    {
+        if (!rockTypes.IsRockType(rockType))
+        {
+            Debug.Log("Error: Name of rock type is not recognized as a stored rock type.");
+            return;
+        }
+
+        Image displayImage = uiDisplay.GetComponentInChildren<Image>();
+        displayImage.material = rockTypes.GetImage("default");
+        Debug.Log("Rock material updated! used " + rockType);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Rover" || other.tag == "Player")
         {
             Debug.Log("Trigger collided!");
             UpdateRockDisplay();
+        }
+    }
+
+    // Person or Rover has Exited the Rocks Sphere of Influence
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Rover" || other.tag == "Player")
+        {
+            Debug.Log("Trigger exited!");
+            RemoveRockDisplay();
         }
     }
 }
