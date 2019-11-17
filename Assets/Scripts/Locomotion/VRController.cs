@@ -7,19 +7,23 @@ public class VRController : MonoBehaviour
 {
     public float gravity = 30.0f;
     public float sensitivity = 0.1f;
+    public float minSpeed = 0.1f;
     public float maxSpeed = 1.0f;
-    public float rotateIncrement = 45.0f;
+    public float smoothSpeed = 1.0f;
+    public float smoothTime = 1.0f;
 
-    public SteamVR_Action_Boolean rotatePress = null;
     public SteamVR_Action_Boolean movePress = null;
 
     [SerializeField] private float speed = 0.0f;
 
+    public GameObject leftHand = null;
+    public GameObject rightHand = null;
+
     private CharacterController characterController = null;
     private Transform cameraRig = null;
     private Transform head = null;
-    private Vector3 lastLHandPos;
-    private Vector3 lastRHandPos;
+    private float prevDistance = 0f;
+    private float currDistance = 0f;
 
     private void Awake()
     {
@@ -31,6 +35,10 @@ public class VRController : MonoBehaviour
     {
         cameraRig = SteamVR_Render.Top().origin;
         head = SteamVR_Render.Top().head;
+        if (leftHand == null)
+            Debug.Log("Error: Left hand reference not assigned.");
+        if (rightHand == null)
+            Debug.Log("Error: Right hand reference not assigned.");
     }
 
     // Update is called once per frame
@@ -38,7 +46,6 @@ public class VRController : MonoBehaviour
     {
         HandleHeight();
         CalculateMovement();
-        SnapRotation();
     }
 
     private void HandleHeight()
@@ -68,7 +75,9 @@ public class VRController : MonoBehaviour
             return;
 
         // determine movement orientation with sum of controller forward vectors
-        Vector3 orientationEuler = new Vector3(0.0f, head.eulerAngles.y, 0.0f);
+        
+        float orientationAverage = (leftHand.transform.eulerAngles.y + rightHand.transform.eulerAngles.y) / 2;
+        Vector3 orientationEuler = new Vector3(0.0f, orientationAverage, 0.0f);
         Quaternion orientation = Quaternion.Euler(orientationEuler);
         Vector3 movement = Vector3.zero;
 
@@ -79,13 +88,24 @@ public class VRController : MonoBehaviour
         // if button pressed
         if (movePress.GetState(SteamVR_Input_Sources.LeftHand) && movePress.GetState(SteamVR_Input_Sources.RightHand))
         {
-            //get initial distance between two controllers
+            //get initial distance between controllers if first function call
+            if (prevDistance == 0f)
+            {
+                prevDistance = Vector3.Distance(leftHand.transform.position, rightHand.transform.position);
+                return;
+            }
+
+            //get current distance between controllers
+            currDistance = Vector3.Distance(leftHand.transform.position, rightHand.transform.position);
 
             //calculate move value based on difference of new and old distance 
-            float moveValue = 0.0f;
+            float moveValue = Mathf.Abs(currDistance - prevDistance);
+            prevDistance = currDistance;
+
             // add and clamp
-            speed += moveValue * sensitivity;
-            speed = Mathf.Clamp(speed, -maxSpeed, maxSpeed);
+            //speed = moveValue * sensitivity;
+            speed = Mathf.SmoothDamp(speed, moveValue * sensitivity, ref smoothSpeed, smoothTime);
+            speed = Mathf.Clamp(speed, 0, maxSpeed);
 
             // orientation
             movement += orientation * (speed * Vector3.forward);
@@ -97,27 +117,4 @@ public class VRController : MonoBehaviour
         // apply
         characterController.Move(movement * Time.deltaTime);
     }    
-
-    private void SnapRotation()
-    {
-        //return if snap action is null
-        if (rotatePress == null)
-            return;
-
-        float snapValue = 0.0f;
-
-        // handle left hand
-        if (rotatePress.GetStateDown(SteamVR_Input_Sources.LeftHand))
-        {
-            snapValue = -Mathf.Abs(rotateIncrement);
-        }
-        // handle right hand
-        if (rotatePress.GetStateDown(SteamVR_Input_Sources.RightHand))
-        {
-            snapValue = Mathf.Abs(rotateIncrement);
-        }
-
-        //calculate
-        transform.RotateAround(head.position, Vector3.up, snapValue);
-    }
 }
