@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.icelandscene.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\Stern\\Elsa_Project\\actions.json",
+      "action_manifest_path": "C:\\Users\\michayal\\Documents\\GitHub\\Team_Elsa\\actions.json",
       "strings": {
         "en_us": {
           "name": "Iceland Scene [Testing]"
