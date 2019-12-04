@@ -17,6 +17,7 @@ Repository for in situ science target localization VR project.
 2) Open the scene named, "Iceland test"
 3) Click play scene
 4) Refer to user control bindings described below
+5) Alternatively, you can navigate to this repository's releases tab to download a zip file containing the application executable
 
 ### Controls
 Action | Controller Binding
