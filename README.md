@@ -4,9 +4,9 @@ Repository for in situ science target localization VR project.
 ### Owners: Stern, Hassan, Daniel, and Michayal
 
 ### Depdendencies: 
-*Unity Version 2019.2.12f1
-*SteamVR Plugin ver. 2.3.2
-*HTC VIVE VR System/Valve Index
+* Unity Version 2019.2.12f1
+* SteamVR Plugin ver. 2.3.2
+* HTC VIVE VR System/Valve Index
 
 ### Instructions
 1) Clone this project repository, checkout the master branch, and open the project with Unity 2019.2.12f1
