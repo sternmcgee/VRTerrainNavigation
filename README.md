@@ -12,10 +12,12 @@ Repository for in situ science target localization VR project.
 4) Refer to user control bindings described below
 
 ### Controls
-Rover controller pickup/drop - Grip press + hold
-Rover acceleration - Trigger press
-Rover Forward Steering - Press + hold upper touchpad for forward steering 
-Rover Reverse Steering - Press + hold lower touchpad for reverse steering
-UI teleport button press - Trigger press while hand hovers over button
-"Swinging Arms" Locomotion - Touchpad press + hold on both controllers simultaneously and pump arms back and forth in desired move direction
-Rock pickup/drop - Grip press + hold
+Action | Controller Binding
+------------ | -------------
+Rover controller pickup/drop | Grip press + hold
+Rover acceleration | Trigger press
+Rover Forward Steering | Press + hold upper touchpad for forward steering 
+Rover Reverse Steering | Press + hold lower touchpad for reverse steering
+UI teleport button press | Trigger press while hand hovers over button
+"Swinging Arms" Locomotion | Touchpad press + hold on both controllers simultaneously and pump arms back and forth in desired move direction
+Rock pickup/drop | Grip press + hold
