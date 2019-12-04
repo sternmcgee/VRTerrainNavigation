@@ -1,7 +1,11 @@
 # Team_Elsa
 Repository for in situ science target localization VR project.
 
-### Owners: Stern, Hassan, Daniel, and Michayal
+### Owners:
+* Stern
+* Hassan
+* Daniel
+* Michayal
 
 ### Depdendencies: 
 * Unity Version 2019.2.12f1
